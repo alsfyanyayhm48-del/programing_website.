@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحدّي - أكاديمية الكود</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon">{ }</span>
+                <span class="logo-text">أكاديمية الكود</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="roadmap.html">المسارات</a></li>
+                <li><a href="lessons.html">الدروس</a></li>
+                <li><a href="challenges.html" class="active">التحديات</a></li>
+                <li><a href="progress.html">تقدّمي</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="mobile-menu" id="mobileMenu" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+            <div style="max-width: 1100px; margin: 0 auto;">
+                <a href="challenges.html" style="color: var(--accent-primary-hover); font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 1rem;">→ كل التحديات</a>
+
+                <div class="challenge-header">
+                    <div>
+                        <h1 class="lesson-title" id="challengeTitle">جارٍ التحميل...</h1>
+                        <div class="lesson-meta" style="border: none; padding: 0; margin-top: 0.5rem;">
+                            <span id="challengeDifficultyBadge"></span>
+                            <span>⏱️ <span id="challengeTime"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge-desc" id="challengeDesc" style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin: 1.5rem 0;"></div>
+
+                <!-- Editor -->
+                <div class="code-editor">
+                    <div class="editor-tabs">
+                        <div class="editor-tab active">
+                            <span>📄</span>
+                            <span id="editorFileName">solution.js</span>
+                        </div>
+                    </div>
+                    <textarea class="editor-textarea" id="codeEditor" spellcheck="false" style="min-height: 320px;"></textarea>
+                    <div class="editor-actions">
+                        <button class="btn btn-primary" onclick="runCode()">
+                            ▶ تشغيل
+                        </button>
+                        <button class="btn btn-ghost" onclick="resetCode()">
+                            ↻ إعادة تعيين
+                        </button>
+                        <button class="btn btn-ghost" onclick="showHint()">
+                            💡 تلميح
+                        </button>
+                        <button class="btn btn-ghost" onclick="showSolution()">
+                            🔑 عرض الحل
+                        </button>
+                        <button class="btn btn-primary" id="markSolvedBtn" onclick="markSolved()" style="margin-right: auto;">
+                            ✓ تحديد كمنجَز
+                        </button>
+                    </div>
+                    <div class="editor-output" id="editorOutput">
+                        <span style="color: #64748b;">// اضغط تشغيل لرؤية النتيجة</span>
+                    </div>
+                </div>
+
+                <div id="hintBox" style="display: none; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent-warning); padding: 1.25rem; border-radius: var(--radius-md); margin: 1rem 0;">
+                    <strong style="color: var(--accent-warning);">💡 تلميح:</strong>
+                    <p id="hintText" style="margin-top: 0.5rem; color: var(--text-secondary);"></p>
+                </div>
+
+                <div id="solutionBox" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-success); padding: 1.25rem; border-radius: var(--radius-md); margin: 1rem 0;">
+                    <strong style="color: var(--accent-success);">🔑 الحل:</strong>
+                    <div class="code-block" style="margin-top: 0.75rem; margin-bottom: 0;">
+                        <pre style="margin: 0;"><code id="solutionCode"></code></pre>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: space-between; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                    <a href="challenges.html" class="lesson-footer-btn">
+                        <span>→</span>
+                        <span>كل التحديات</span>
+                    </a>
+                    <a href="#" class="lesson-footer-btn" id="nextChallenge">
+                        <span>التحدّي التالي</span>
+                        <span>←</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>صُنع بـ ❤️ للمتعلمين العرب</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/storage.js"></script>
+    <script src="../js/paths.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const challengeId = urlParams.get('id');
+        const challenge = getChallengeById(challengeId);
+
+        if (!challenge) {
+            document.querySelector('section .container').innerHTML = '<p style="text-align: center; padding: 4rem;">التحدّي غير موجود</p>';
+        } else {
+            const difficultyText = { easy: 'سهل', medium: 'متوسط', hard: 'صعب' };
+            const fileName = challenge.pathId === 'python' ? 'solution.py' : 'solution.js';
+
+            // Update document title for SEO/tab
+            document.title = challenge.title + ' - أكاديمية الكود';
+
+            document.getElementById('challengeTitle').textContent = challenge.title;
+            document.getElementById('challengeDesc').textContent = challenge.description;
+            document.getElementById('challengeTime').textContent = challenge.time;
+            document.getElementById('editorFileName').textContent = fileName;
+
+            const diffBadge = document.getElementById('challengeDifficultyBadge');
+            diffBadge.innerHTML = `<span class="challenge-difficulty difficulty-${challenge.difficulty}">${difficultyText[challenge.difficulty]}</span>`;
+
+            // Load saved code or starter
+            const saved = Storage.getCode(`challenge-${challengeId}`);
+            document.getElementById('codeEditor').value = saved || challenge.starterCode;
+
+            // Update solved button
+            updateSolvedButton();
+
+            // Set up next challenge link
+            const allChallenges = CHALLENGES;
+            const currentIdx = allChallenges.findIndex(c => c.id === challengeId);
+            if (currentIdx >= 0 && currentIdx < allChallenges.length - 1) {
+                const next = allChallenges[currentIdx + 1];
+                document.getElementById('nextChallenge').href = `?id=${next.id}`;
+                document.getElementById('nextChallenge').style.visibility = 'visible';
+            } else {
+                document.getElementById('nextChallenge').style.visibility = 'hidden';
+            }
+        }
+
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const output = document.getElementById('editorOutput');
+            const fileName = document.getElementById('editorFileName').textContent;
+            const isHTML = fileName.endsWith('.html');
+            const isPython = fileName.endsWith('.py');
+
+            // Save code
+            Storage.saveCode(`challenge-${challengeId}`, code);
+
+            if (isHTML) {
+                output.innerHTML = `<div style="color: #94a3b8; margin-bottom: 0.5rem;">معاينة HTML:</div><iframe style="width:100%; height:200px; background:white; border:1px solid #334155; border-radius:4px;" srcdoc="${code.replace(/"/g, '&quot;')}"></iframe>`;
+            } else if (isPython) {
+                output.innerHTML = `<span style="color: #facc15;">⚠ ملاحظة:</span> لتشغيل Python فعلياً، ثبّت Python واستخدم: <code>python ${fileName}</code>\n\n<span style="color: #60a5fa;">الكود جاهز:</span>\n${code}`;
+            } else {
+                let logs = [];
+                const originalLog = console.log;
+                console.log = (...args) => {
+                    logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+                };
+                try {
+                    eval(code);
+                    output.textContent = logs.length === 0 ? '✓ تم التشغيل بنجاح (لا مخرجات)' : logs.join('\n');
+                    output.classList.remove('error');
+                    if (logs.length > 0) {
+                        Toast.success('تم التشغيل ✓', 'شوف النتيجة تحت!');
+                    }
+                } catch (err) {
+                    output.textContent = '✕ خطأ: ' + err.message;
+                    output.classList.add('error');
+                }
+                console.log = originalLog;
+            }
+        }
+
+        function resetCode() {
+            document.getElementById('codeEditor').value = challenge.starterCode;
+            Storage.saveCode(`challenge-${challengeId}`, '');
+            document.getElementById('editorOutput').innerHTML = '<span style="color: #64748b;">// تم إعادة التعيين</span>';
+        }
+
+        function showHint() {
+            const box = document.getElementById('hintBox');
+            document.getElementById('hintText').textContent = challenge.hint || 'لا يوجد تلميح لهذا التحدّي.';
+            box.style.display = 'block';
+            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function showSolution() {
+            const box = document.getElementById('solutionBox');
+            document.getElementById('solutionCode').textContent = challenge.solution;
+            box.style.display = 'block';
+            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function markSolved() {
+            const solved = Storage.markChallengeSolved(challengeId);
+            checkAchievements();
+            if (solved) {
+                Toast.success('مبروك! 🎉', 'سجّلت التحدّي كمنجَز.');
+            } else {
+                Toast.info('سابقاً', 'كنت قد أنجزت هذا التحدّي.');
+            }
+            updateSolvedButton();
+        }
+
+        function updateSolvedButton() {
+            const btn = document.getElementById('markSolvedBtn');
+            const solved = Storage.getSolvedChallenges().includes(challengeId);
+            if (solved) {
+                btn.innerHTML = '✓ مُنجَز';
+                btn.style.background = 'var(--accent-success)';
+                btn.style.color = 'white';
+            } else {
+                btn.innerHTML = '✓ تحديد كمنجَز';
+                btn.style.background = '';
+                btn.style.color = '';
+            }
+        }
+
+        function checkAchievements() {
+            const stats = Storage.getStats();
+            if (stats.challengesSolved >= 1) Storage.unlockAchievement('first-challenge');
+            if (stats.challengesSolved >= 5) Storage.unlockAchievement('challenges-5');
+            if (stats.challengesSolved >= 15) Storage.unlockAchievement('challenges-15');
+        }
+
+        // Auto-save
+        document.getElementById('codeEditor').addEventListener('input', () => {
+            Storage.saveCode(`challenge-${challengeId}`, document.getElementById('codeEditor').value);
+        });
+
+        // Ctrl/Cmd+S
+        document.getElementById('codeEditor').addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                Toast.success('تم الحفظ! 💾', 'تقدّمك محفوظ.');
+            }
+        });
+    </script>
+</body>
+</html>

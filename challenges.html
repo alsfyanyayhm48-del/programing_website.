@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحديات البرمجية - أكاديمية الكود</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon">{ }</span>
+                <span class="logo-text">أكاديمية الكود</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="roadmap.html">المسارات</a></li>
+                <li><a href="lessons.html">الدروس</a></li>
+                <li><a href="challenges.html" class="active">التحديات</a></li>
+                <li><a href="progress.html">تقدّمي</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="mobile-menu" id="mobileMenu" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">التحديات</span>
+                <h1 class="section-title">حلّل، تعلّم، تطوّر</h1>
+                <p class="section-subtitle">تحديات متدرجة الصعوبة تحوّل تعلّمك إلى لعبة ممتعة. كل تحدّي يحلّه عقلك يصبح أقوى 💪</p>
+            </div>
+
+            <!-- Filters -->
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: center;">
+                <button class="btn btn-ghost filter-btn active" data-filter="all">الكل</button>
+                <button class="btn btn-ghost filter-btn" data-filter="easy">سهل</button>
+                <button class="btn btn-ghost filter-btn" data-filter="medium">متوسط</button>
+                <button class="btn btn-ghost filter-btn" data-filter="hard">صعب</button>
+                <span style="width: 1px; background: var(--border-color); margin: 0 0.5rem;"></span>
+                <button class="btn btn-ghost filter-btn" data-filter="frontend">Frontend</button>
+                <button class="btn btn-ghost filter-btn" data-filter="python">Python</button>
+                <button class="btn btn-ghost filter-btn" data-filter="javascript">JavaScript</button>
+            </div>
+
+            <!-- Challenges List -->
+            <div id="challengesList">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>صُنع بـ ❤️ للمتعلمين العرب</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/storage.js"></script>
+    <script src="../js/paths.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        let currentFilter = 'all';
+
+        function renderChallenges() {
+            const solved = Storage.getSolvedChallenges();
+            const list = document.getElementById('challengesList');
+
+            let filtered = CHALLENGES;
+            if (currentFilter !== 'all') {
+                if (['easy', 'medium', 'hard'].includes(currentFilter)) {
+                    filtered = filtered.filter(c => c.difficulty === currentFilter);
+                } else {
+                    filtered = filtered.filter(c => c.pathId === currentFilter);
+                }
+            }
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<p style="text-align: center; padding: 3rem; color: var(--text-muted);">لا توجد تحديات في هذا التصنيف</p>';
+                return;
+            }
+
+            list.innerHTML = filtered.map(challenge => {
+                const isSolved = solved.includes(challenge.id);
+                const difficultyText = { easy: 'سهل', medium: 'متوسط', hard: 'صعب' };
+                const pathText = { frontend: 'Frontend', python: 'Python', javascript: 'JavaScript', fullstack: 'Full-Stack' };
+
+                return `
+                    <article class="challenge-card">
+                        <div class="challenge-header">
+                            <div>
+                                <h3 class="challenge-title">${isSolved ? '✓ ' : ''}${challenge.title}</h3>
+                                <div class="challenge-meta">
+                                    <span>📁 ${pathText[challenge.pathId]}</span>
+                                    <span>⏱️ ${challenge.time}</span>
+                                </div>
+                            </div>
+                            <span class="challenge-difficulty difficulty-${challenge.difficulty}">${difficultyText[challenge.difficulty]}</span>
+                        </div>
+                        <p class="challenge-desc">${challenge.description}</p>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="openChallenge('${challenge.id}')">
+                                ${isSolved ? '↻ مراجعة' : '▶ ابدأ التحدّي'}
+                            </button>
+                            ${isSolved ? '<span style="color: var(--accent-success); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">✓ مُنجَز</span>' : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function openChallenge(id) {
+            // Save challenge ID and redirect to challenge runner
+            sessionStorage.setItem('current_challenge', id);
+            window.location.href = `challenge.html?id=${id}`;
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('btn-primary', 'active'));
+                btn.classList.add('btn-primary', 'active');
+                currentFilter = btn.dataset.filter;
+                renderChallenges();
+            });
+        });
+
+        // Set default active
+        document.querySelector('[data-filter="all"]').classList.add('btn-primary', 'active');
+
+        renderChallenges();
+    </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية الكود - تعلم البرمجة من الصفر</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">{ }</span>
+                <span class="logo-text">أكاديمية الكود</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">الرئيسية</a></li>
+                <li><a href="pages/roadmap.html">المسارات</a></li>
+                <li><a href="pages/lessons.html">الدروس</a></li>
+                <li><a href="pages/challenges.html">التحديات</a></li>
+                <li><a href="pages/progress.html">تقدّمي</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="mobile-menu" id="mobileMenu" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="grid-bg"></div>
+            <div class="glow glow-1"></div>
+            <div class="glow glow-2"></div>
+        </div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    مجاني 100% • بالعربي • للمبتدئين
+                </div>
+                <h1 class="hero-title">
+                    تعلّم البرمجة
+                    <span class="gradient-text">خطوة بخطوة</span>
+                </h1>
+                <p class="hero-subtitle">
+                    من الصفر إلى أول سطر كود. مسارات تفاعلية، تحديات ممتعة، وتقدّم يُحفّزك تكمل. بدون أي خبرة سابقة.
+                </p>
+                <div class="hero-actions">
+                    <a href="pages/roadmap.html" class="btn btn-primary btn-lg">
+                        ابدأ مسارك مجاناً
+                        <span class="btn-arrow">←</span>
+                    </a>
+                    <a href="#paths" class="btn btn-ghost btn-lg">استكشف المسارات</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">درس تفاعلي</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">مسارات كاملة</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label">تحدّي برمجي</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <div class="window-title">main.js</div>
+                    </div>
+                    <pre class="code-content"><code><span class="code-keyword">function</span> <span class="code-function">تعلّم</span>(<span class="code-var">شخص</span>) {
+  <span class="code-keyword">const</span> <span class="code-var">شغف</span> = <span class="code-string">"البرمجة"</span>;
+  <span class="code-keyword">const</span> <span class="code-var">طريق</span> = [];
+
+  <span class="code-keyword">for</span> (<span class="code-keyword">let</span> <span class="code-var">يوم</span> = <span class="code-number">1</span>; يوم &lt;= <span class="code-number">365</span>; يوم++) {
+    طريق.push(<span class="code-string">`يوم <span class="code-var">${يوم}</span>: تعلّمت شيئاً جديداً`</span>);
+  }
+
+  <span class="code-keyword">return</span> <span class="code-string">`مبروك <span class="code-var">${شخص}</span>، صرت مبرمج!`</span>;
+}
+
+<span class="code-function">تعلّم</span>(<span class="code-string">"أنت"</span>);</code></pre>
+                </div>
+                <div class="floating-tag tag-1">
+                    <span>🎯</span> HTML
+                </div>
+                <div class="floating-tag tag-2">
+                    <span>🎨</span> CSS
+                </div>
+                <div class="floating-tag tag-3">
+                    <span>⚡</span> JavaScript
+                </div>
+                <div class="floating-tag tag-4">
+                    <span>🐍</span> Python
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="paths" id="paths">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">المسارات</span>
+                <h2 class="section-title">اختر مسارك البرمجي</h2>
+                <p class="section-subtitle">كل مسار مصمم يأخذك من الصفر لاحتراف خطوة بخطوة</p>
+            </div>
+
+            <div class="paths-grid">
+                <article class="path-card" data-path="frontend">
+                    <div class="path-icon" style="--icon-color: #f59e0b;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                    </div>
+                    <div class="path-level">مبتدئ</div>
+                    <h3 class="path-title">مطوّر واجهات أمامية</h3>
+                    <p class="path-desc">HTML, CSS, JavaScript, React. اصنع مواقع وتطبيقات ويب تفاعلية جميلة.</p>
+                    <div class="path-meta">
+                        <span class="path-steps">📚 12 درس</span>
+                        <span class="path-time">⏱️ 20 ساعة</span>
+                    </div>
+                    <a href="pages/roadmap.html?path=frontend" class="path-link">
+                        ابدأ المسار
+                        <span>←</span>
+                    </a>
+                </article>
+
+                <article class="path-card" data-path="python">
+                    <div class="path-icon" style="--icon-color: #3b82f6;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <div class="path-level">مبتدئ</div>
+                    <h3 class="path-title">Python من الصفر</h3>
+                    <p class="path-desc">أساسيات Python، البرمجة الكائنية، وأتمتة المهام. لغة مثالية للبداية.</p>
+                    <div class="path-meta">
+                        <span class="path-steps">📚 14 درس</span>
+                        <span class="path-time">⏱️ 25 ساعة</span>
+                    </div>
+                    <a href="pages/roadmap.html?path=python" class="path-link">
+                        ابدأ المسار
+                        <span>←</span>
+                    </a>
+                </article>
+
+                <article class="path-card" data-path="fullstack">
+                    <div class="path-icon" style="--icon-color: #10b981;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                    </div>
+                    <div class="path-level">متوسط</div>
+                    <h3 class="path-title">مطوّر ويب شامل</h3>
+                    <p class="path-desc">Frontend + Backend + قواعد بيانات. اصنع تطبيق ويب كامل من الألف للياء.</p>
+                    <div class="path-meta">
+                        <span class="path-steps">📚 20 درس</span>
+                        <span class="path-time">⏱️ 40 ساعة</span>
+                    </div>
+                    <a href="pages/roadmap.html?path=fullstack" class="path-link">
+                        ابدأ المسار
+                        <span>←</span>
+                    </a>
+                </article>
+
+                <article class="path-card" data-path="javascript">
+                    <div class="path-icon" style="--icon-color: #facc15;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </div>
+                    <div class="path-level">مبتدئ - متوسط</div>
+                    <h3 class="path-title">JavaScript متعمّق</h3>
+                    <p class="path-desc">من الأساسيات إلى ES6+، الـ Async، والـ APIs. اللغة الأقوى للويب.</p>
+                    <div class="path-meta">
+                        <span class="path-steps">📚 16 درس</span>
+                        <span class="path-time">⏱️ 30 ساعة</span>
+                    </div>
+                    <a href="pages/roadmap.html?path=javascript" class="path-link">
+                        ابدأ المسار
+                        <span>←</span>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">ليش أكاديمية الكود؟</span>
+                <h2 class="section-title">تعلّم بشكل لم تتخيّله</h2>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <h3>مسار واضح</h3>
+                    <p>تعرف بالضبط وش الخطوة الجاية، بدون ما تضيع بين آلاف المصادر.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>تعلّم بالتمرّس</h3>
+                    <p>تكتب كود حقيقي من أول درس. محرّر مدمج يشتغل في المتصفح مباشرة.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🏆</div>
+                    <h3>تحديات ممتعة</h3>
+                    <p>حلول لتحديات متدرجة الصعوبة تحوّل التعلم إلى لعبة ممتعة.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>تتبّع تقدّمك</h3>
+                    <p>شوف كم وصلت، إنجازاتك، ومستواك. كل شي محفوظ تلقائياً.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌙</div>
+                    <h3>راحة للعين</h3>
+                    <p>وضع داكن مريح، خط واضح، تصميم نظيف بدون تشتيت.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🆓</div>
+                    <h3>مجاني بالكامل</h3>
+                    <p>بدون اشتراكات، بدون إعلانات، بدون حدود. تعلّم بقدر ما تبي.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-card">
+                <h2>جاهز تبدأ رحلتك؟</h2>
+                <p>آلاف المبتدئين بدأوا معنا. دورك الحين!</p>
+                <a href="pages/roadmap.html" class="btn btn-primary btn-lg">
+                    اختر مسارك وابدأ
+                    <span class="btn-arrow">←</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon">{ }</span>
+                        <span class="logo-text">أكاديمية الكود</span>
+                    </div>
+                    <p>منصة عربية مجانية لتعلم البرمجة من الصفر.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>المسارات</h4>
+                    <ul>
+                        <li><a href="pages/roadmap.html?path=frontend">Front-end</a></li>
+                        <li><a href="pages/roadmap.html?path=python">Python</a></li>
+                        <li><a href="pages/roadmap.html?path=fullstack">Full-stack</a></li>
+                        <li><a href="pages/roadmap.html?path=javascript">JavaScript</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>الموقع</h4>
+                    <ul>
+                        <li><a href="pages/lessons.html">الدروس</a></li>
+                        <li><a href="pages/challenges.html">التحديات</a></li>
+                        <li><a href="pages/progress.html">تقدّمي</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>صُنع بـ م/أيهم رائد السفياني .  للمتعلمين العرب</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

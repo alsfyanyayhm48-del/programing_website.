@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المسار البرمجي - أكاديمية الكود</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon">{ }</span>
+                <span class="logo-text">أكاديمية الكود</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="roadmap.html" class="active">المسارات</a></li>
+                <li><a href="lessons.html">الدروس</a></li>
+                <li><a href="challenges.html">التحديات</a></li>
+                <li><a href="progress.html">تقدّمي</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="mobile-menu" id="mobileMenu" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Roadmap Header -->
+    <section class="roadmap-header">
+        <div class="container">
+            <div class="roadmap-title-row">
+                <div class="roadmap-icon" id="pathIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="roadmap-title" id="pathTitle">مطوّر واجهات أمامية</h1>
+                    <p class="roadmap-subtitle" id="pathDesc">من الصفر إلى بناء مواقع ويب احترافية تفاعلية</p>
+                </div>
+            </div>
+
+            <!-- Path Selector -->
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <button class="btn btn-ghost" data-path="frontend">Frontend</button>
+                <button class="btn btn-ghost" data-path="python">Python</button>
+                <button class="btn btn-ghost" data-path="fullstack">Full-Stack</button>
+                <button class="btn btn-ghost" data-path="javascript">JavaScript</button>
+            </div>
+
+            <div class="progress-bar progress-bar-large">
+                <div class="progress-bar-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="roadmap-progress-info">
+                <span><strong id="progressCompleted">0</strong> من <strong id="progressTotal">0</strong> خطوة مكتملة</span>
+                <span><strong id="progressPercent">0</strong>%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Steps -->
+    <section class="roadmap-container">
+        <div class="container">
+            <div class="roadmap-timeline" id="timeline">
+                <!-- Steps will be rendered by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>صُنع بـ ❤️ للمتعلمين العرب</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/storage.js"></script>
+    <script src="../js/paths.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // Get path from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentPathId = urlParams.get('path') || Storage.get('last_path', 'frontend');
+
+        function renderRoadmap() {
+            const path = getPath(currentPathId);
+            if (!path) {
+                document.getElementById('timeline').innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem;">المسار غير موجود</p>';
+                return;
+            }
+
+            // Save last viewed path
+            Storage.set('last_path', currentPathId);
+
+            // Update header
+            document.getElementById('pathIcon').innerHTML = path.icon;
+            document.getElementById('pathTitle').textContent = path.title;
+            document.getElementById('pathDesc').textContent = path.description;
+            document.documentElement.style.setProperty('--icon-color', path.color);
+
+            // Update active path button
+            document.querySelectorAll('[data-path]').forEach(btn => {
+                btn.classList.toggle('btn-primary', btn.dataset.path === currentPathId);
+                btn.classList.toggle('btn-ghost', btn.dataset.path !== currentPathId);
+            });
+
+            // Render steps
+            const timeline = document.getElementById('timeline');
+            const progress = Storage.getProgress(currentPathId);
+
+            timeline.innerHTML = path.steps.map(step => {
+                const completed = progress.completedSteps.includes(step.id);
+                const isActive = step.id === progress.currentStep && !completed;
+                const statusClass = completed ? 'completed' : (isActive ? 'active' : '');
+                const statusText = completed ? '✓ مكتمل' : (isActive ? '← الحالي' : 'لم يبدأ');
+                const statusType = completed ? 'status-done' : (isActive ? 'status-active' : 'status-todo');
+
+                return `
+                    <div class="step ${statusClass}">
+                        <div class="step-marker">${completed ? '✓' : step.id + 1}</div>
+                        <div class="step-content">
+                            <div class="step-header">
+                                <div>
+                                    <h3 class="step-title">${step.title}</h3>
+                                    <div class="step-level">${step.level}</div>
+                                </div>
+                                <span class="step-status ${statusType}">${statusText}</span>
+                            </div>
+                            <p class="step-desc">${step.description}</p>
+                            <div class="step-topics">
+                                ${step.topics.map(t => `<span class="topic-tag">${t}</span>`).join('')}
+                            </div>
+                            <div class="step-actions">
+                                <a href="lessons.html?path=${currentPathId}&step=${step.id}" class="btn btn-primary">
+                                    ${completed ? 'مراجعة الدرس' : 'ابدأ الدرس'}
+                                    <span class="btn-arrow">←</span>
+                                </a>
+                                ${completed
+                                    ? `<button class="btn btn-ghost" onclick="uncompleteStep(${step.id})">تراجع عن الإكمال</button>`
+                                    : `<button class="btn btn-ghost" onclick="completeStep(${step.id})">تحديد كمكتمل ✓</button>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update progress
+            const stats = Storage.getPathProgress(currentPathId, path.steps.length);
+            document.getElementById('progressFill').style.width = stats.percent + '%';
+            document.getElementById('progressCompleted').textContent = stats.completed;
+            document.getElementById('progressTotal').textContent = stats.total;
+            document.getElementById('progressPercent').textContent = stats.percent;
+        }
+
+        function completeStep(stepId) {
+            Storage.completeStep(currentPathId, stepId);
+            checkAchievements();
+            renderRoadmap();
+            Toast.success('خطوة مكتملة! 🎉', 'استمر على هذا المستوى!');
+        }
+
+        function uncompleteStep(stepId) {
+            Storage.uncompleteStep(currentPathId, stepId);
+            renderRoadmap();
+            Toast.info('تم التراجع', 'الخطوة لم تعد مكتملة.');
+        }
+
+        function checkAchievements() {
+            const stats = Storage.getStats();
+            const progress = Storage.getProgress(currentPathId);
+            const path = getPath(currentPathId);
+            const percent = (progress.completedSteps.length / path.steps.length) * 100;
+
+            if (stats.stepsCompleted >= 1) Storage.unlockAchievement('first-step');
+            if (percent >= 25) Storage.unlockAchievement('path-25');
+            if (percent >= 50) Storage.unlockAchievement('path-50');
+            if (percent >= 100) Storage.unlockAchievement('path-100');
+
+            // Multi-path
+            let pathsStarted = 0;
+            ['frontend', 'python', 'fullstack', 'javascript'].forEach(p => {
+                if (Storage.getProgress(p).completedSteps.length > 0) pathsStarted++;
+            });
+            if (pathsStarted >= 2) Storage.unlockAchievement('multi-path');
+            if (pathsStarted >= 4) Storage.unlockAchievement('all-paths');
+        }
+
+        // Path switcher
+        document.querySelectorAll('[data-path]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentPathId = btn.dataset.path;
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('path', currentPathId);
+                window.history.pushState({}, '', newUrl);
+                renderRoadmap();
+            });
+        });
+
+        renderRoadmap();
+    </script>
+</body>
+</html>

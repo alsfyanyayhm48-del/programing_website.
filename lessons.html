@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس - أكاديمية الكود</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon">{ }</span>
+                <span class="logo-text">أكاديمية الكود</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="roadmap.html">المسارات</a></li>
+                <li><a href="lessons.html" class="active">الدروس</a></li>
+                <li><a href="challenges.html">التحديات</a></li>
+                <li><a href="progress.html">تقدّمي</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="mobile-menu" id="mobileMenu" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="lesson-layout">
+            <!-- Sidebar -->
+            <aside class="lesson-sidebar">
+                <h3>دروس المسار</h3>
+                <nav class="lesson-nav" id="lessonNav">
+                    <!-- Filled by JS -->
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <article class="lesson-content">
+                <div class="lesson-breadcrumb">
+                    <a href="roadmap.html">المسارات</a>
+                    <span> / </span>
+                    <span id="breadcrumbPath">Frontend</span>
+                    <span> / </span>
+                    <span id="breadcrumbStep">الدرس</span>
+                </div>
+
+                <h1 class="lesson-title" id="lessonTitle">جارٍ التحميل...</h1>
+
+                <div class="lesson-meta">
+                    <span>⏱️ <strong id="lessonDuration">10</strong> دقيقة</span>
+                    <span>📊 المستوى: <strong id="lessonLevel">مبتدئ</strong></span>
+                    <span id="lessonViews">👁️ 0 مشاهدة</span>
+                </div>
+
+                <div class="lesson-body" id="lessonBody">
+                    <!-- Filled by JS -->
+                </div>
+
+                <!-- Editor -->
+                <h2 style="margin-top: 2.5rem;">جرّب بنفسك ✍️</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">عدّل الكود وشوف النتيجة مباشرة. اضغط "تشغيل" لتنفيذه.</p>
+
+                <div class="code-editor">
+                    <div class="editor-tabs">
+                        <div class="editor-tab active">
+                            <span>📄</span>
+                            <span id="editorFileName">main.js</span>
+                        </div>
+                    </div>
+                    <textarea class="editor-textarea" id="codeEditor" spellcheck="false"></textarea>
+                    <div class="editor-actions">
+                        <button class="btn btn-primary" onclick="runCode()">
+                            ▶ تشغيل
+                        </button>
+                        <button class="btn btn-ghost" onclick="resetCode()">
+                            ↻ إعادة تعيين
+                        </button>
+                        <button class="btn btn-ghost" onclick="saveCode()">
+                            💾 حفظ تقدمي
+                        </button>
+                    </div>
+                    <div class="editor-output" id="editorOutput">
+                        <span style="color: #64748b;">// اضغط تشغيل لرؤية النتيجة</span>
+                    </div>
+                </div>
+
+                <!-- Mark as complete -->
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <strong>هل أنهيت الدرس؟</strong>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">حدده كمكتمل لتظهر في تقدّمك</p>
+                    </div>
+                    <button class="btn btn-primary" id="completeBtn" onclick="markLessonComplete()">
+                        ✓ تحديد كمكتمل
+                    </button>
+                </div>
+
+                <!-- Navigation -->
+                <div class="lesson-footer">
+                    <a href="#" class="lesson-footer-btn" id="prevLesson">
+                        <span>→</span>
+                        <span>الدرس السابق</span>
+                    </a>
+                    <a href="#" class="lesson-footer-btn" id="nextLesson">
+                        <span>الدرس التالي</span>
+                        <span>←</span>
+                    </a>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>صُنع بـ ❤️ للمتعلمين العرب</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/storage.js"></script>
+    <script src="../js/paths.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/lessons.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pathId = urlParams.get('path') || 'frontend';
+        const stepId = parseInt(urlParams.get('step') || '0');
+
+        const path = getPath(pathId);
+        const step = path ? path.steps[stepId] : null;
+
+        if (!step) {
+            document.querySelector('.lesson-content').innerHTML = '<p style="text-align: center; padding: 4rem;">الدرس غير موجود</p>';
+        } else {
+            // Render sidebar
+            const lessonNav = document.getElementById('lessonNav');
+            lessonNav.innerHTML = path.steps.map(s => {
+                const completed = Storage.isStepCompleted(pathId, s.id);
+                return `
+                    <a href="?path=${pathId}&step=${s.id}" class="lesson-nav-item ${s.id === stepId ? 'active' : ''} ${completed ? 'completed' : ''}">
+                        <span class="lesson-nav-check">${completed ? '✓' : ''}</span>
+                        <span>${s.id + 1}. ${s.title}</span>
+                    </a>
+                `;
+            }).join('');
+
+            // Render content
+            document.getElementById('breadcrumbPath').textContent = path.title;
+            document.getElementById('breadcrumbStep').textContent = step.title;
+            document.getElementById('lessonTitle').textContent = step.title;
+            document.getElementById('lessonLevel').textContent = step.level;
+
+            // Mark lesson as visited
+            Storage.markLessonVisited(`lesson-${pathId}-${stepId}`);
+            document.getElementById('lessonViews').textContent = `👁️ ${Storage.getVisitedLessons().length} مشاهدة`;
+
+            // Get lesson content from lessons data
+            const lessonContent = LESSONS[`${pathId}-${stepId}`] || LESSONS['default'];
+
+            document.getElementById('lessonBody').innerHTML = lessonContent.body;
+            document.getElementById('editorFileName').textContent = lessonContent.fileName || 'main.js';
+
+            // Setup editor with saved code or starter
+            const savedCode = Storage.getCode(`code-${pathId}-${stepId}`);
+            const editor = document.getElementById('codeEditor');
+            editor.value = savedCode || lessonContent.starterCode || '';
+
+            // Update complete button if already done
+            updateCompleteButton();
+
+            // Setup navigation
+            const prevStep = stepId > 0 ? stepId - 1 : null;
+            const nextStep = stepId < path.steps.length - 1 ? stepId + 1 : null;
+
+            const prevBtn = document.getElementById('prevLesson');
+            const nextBtn = document.getElementById('nextLesson');
+
+            if (prevStep !== null) {
+                prevBtn.href = `?path=${pathId}&step=${prevStep}`;
+                prevBtn.style.visibility = 'visible';
+            } else {
+                prevBtn.style.visibility = 'hidden';
+            }
+
+            if (nextStep !== null) {
+                nextBtn.href = `?path=${pathId}&step=${nextStep}`;
+                nextBtn.style.visibility = 'visible';
+            } else {
+                nextBtn.href = `progress.html`;
+                nextBtn.querySelector('span:last-child').textContent = '🎉';
+                nextBtn.querySelector('span:first-child').textContent = 'تقدّمك';
+            }
+        }
+
+        function updateCompleteButton() {
+            const btn = document.getElementById('completeBtn');
+            const completed = Storage.isStepCompleted(pathId, stepId);
+            if (completed) {
+                btn.innerHTML = '✓ مكتمل - تراجع';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-ghost');
+            } else {
+                btn.innerHTML = '✓ تحديد كمكتمل';
+                btn.classList.add('btn-primary');
+                btn.classList.remove('btn-ghost');
+            }
+        }
+
+        function markLessonComplete() {
+            const completed = Storage.isStepCompleted(pathId, stepId);
+            if (completed) {
+                Storage.uncompleteStep(pathId, stepId);
+                Toast.info('تم التراجع', 'الخطوة لم تعد مكتملة.');
+            } else {
+                Storage.completeStep(pathId, stepId);
+                checkLessonAchievements();
+                Toast.success('تم الإكمال! 🎉', 'تقدّم رائع! استممر.');
+            }
+            updateCompleteButton();
+            // Refresh sidebar to show the check
+            document.querySelectorAll('.lesson-nav-item').forEach((el, i) => {
+                const isCompleted = Storage.isStepCompleted(pathId, i);
+                el.classList.toggle('completed', isCompleted);
+                el.querySelector('.lesson-nav-check').textContent = isCompleted ? '✓' : '';
+            });
+        }
+
+        function checkLessonAchievements() {
+            const stats = Storage.getStats();
+            if (stats.lessonsVisited >= 1) Storage.unlockAchievement('first-step');
+            if (stats.stepsCompleted >= 3) Storage.unlockAchievement('streak-3');
+        }
+
+        // Code editor functions
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const output = document.getElementById('editorOutput');
+
+            // Try to detect language and execute
+            const fileName = document.getElementById('editorFileName').textContent;
+            const isHTML = fileName.endsWith('.html');
+            const isPython = fileName.endsWith('.py');
+
+            if (isHTML) {
+                // Show preview
+                output.innerHTML = `<div style="color: #94a3b8; margin-bottom: 0.5rem;">معاينة HTML:</div><iframe style="width:100%; height:150px; background:white; border:1px solid #334155; border-radius:4px;" srcdoc="${code.replace(/"/g, '&quot;')}"></iframe>`;
+            } else if (isPython) {
+                // Mock Python execution (we can't really run Python in browser without Pyodide)
+                output.innerHTML = `<span style="color: #facc15;">⚠ ملاحظة:</span> تشغيل Python يحتاج بيئة Python مثبتة. هذا عرض توضيحي للكود.\n\n<span style="color: #60a5fa;">الكود جاهز للتشغيل:</span>\n${escapeHtml(code)}`;
+            } else {
+                // JavaScript - execute safely
+                let logs = [];
+                const originalLog = console.log;
+                console.log = (...args) => {
+                    logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+                };
+                try {
+                    eval(code);
+                    if (logs.length === 0) {
+                        output.textContent = '✓ تم التشغيل بنجاح (لا يوجد مخرجات)';
+                        output.classList.remove('error');
+                    } else {
+                        output.textContent = logs.join('\n');
+                        output.classList.remove('error');
+                    }
+                } catch (err) {
+                    output.textContent = '✕ خطأ: ' + err.message;
+                    output.classList.add('error');
+                }
+                console.log = originalLog;
+            }
+        }
+
+        function resetCode() {
+            const lessonContent = LESSONS[`${pathId}-${stepId}`] || LESSONS['default'];
+            document.getElementById('codeEditor').value = lessonContent.starterCode || '';
+            Storage.saveCode(`code-${pathId}-${stepId}`, '');
+            document.getElementById('editorOutput').innerHTML = '<span style="color: #64748b;">// تم إعادة التعيين</span>';
+            Toast.info('تم إعادة التعيين', 'الكود رجع للحالة الأصلية.');
+        }
+
+        function saveCode() {
+            const code = document.getElementById('codeEditor').value;
+            Storage.saveCode(`code-${pathId}-${stepId}`, code);
+            Toast.success('تم الحفظ! 💾', 'تقدّمك محفوظ محلياً.');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // Auto-save on Ctrl/Cmd+S
+        document.getElementById('codeEditor').addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveCode();
+            }
+        });
+    </script>
+</body>
+</html>

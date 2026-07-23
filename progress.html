@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقدّمي - أكاديمية الكود</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon">{ }</span>
+                <span class="logo-text">أكاديمية الكود</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="roadmap.html">المسارات</a></li>
+                <li><a href="lessons.html">الدروس</a></li>
+                <li><a href="challenges.html">التحديات</a></li>
+                <li><a href="progress.html" class="active">تقدّمي</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="mobile-menu" id="mobileMenu" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">تقدّمك</span>
+                <h1 class="section-title">رحلتك بالأرقام</h1>
+                <p class="section-subtitle">كل خطوة تاخذها تُسجَّل. كل إنجاز يفتح لك إنجاز جديد.</p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="stats-row" id="statsRow"></div>
+
+            <!-- Paths Progress -->
+            <div style="margin: 3rem 0 2rem;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">المسارات</h2>
+                <div id="pathsProgress" style="display: grid; gap: 1rem;"></div>
+            </div>
+
+            <!-- Achievements -->
+            <div style="margin: 3rem 0 2rem;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">الإنجازات</h2>
+                <div class="achievements-grid" id="achievementsGrid"></div>
+            </div>
+
+            <!-- Reset -->
+            <div style="margin-top: 4rem; padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); text-align: center;">
+                <h3 style="margin-bottom: 0.5rem;">تبي تبدأ من جديد؟</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">تقدر تمسح كل تقدّمك وتبدأ من الصفر. لا تقلق، تقدر دائماً ترجع.</p>
+                <button class="btn btn-ghost" onclick="resetProgress()" style="color: var(--accent-danger); border-color: var(--accent-danger);">
+                    🗑️ مسح كل التقدّم
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>صُنع بـ ❤️ للمتعلمين العرب</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/storage.js"></script>
+    <script src="../js/paths.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        function renderProgress() {
+            const stats = Storage.getStats();
+
+            // Stats overview
+            const statsRow = document.getElementById('statsRow');
+            statsRow.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-card-icon">📚</div>
+                    <div class="stat-card-value">${stats.lessonsVisited}</div>
+                    <div class="stat-card-label">درس زرته</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">✓</div>
+                    <div class="stat-card-value">${stats.stepsCompleted}</div>
+                    <div class="stat-card-label">خطوة مكتملة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">💪</div>
+                    <div class="stat-card-value">${stats.challengesSolved}</div>
+                    <div class="stat-card-label">تحدّي منجَز</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">🏆</div>
+                    <div class="stat-card-value">${stats.achievements}</div>
+                    <div class="stat-card-label">إنجاز مفتوح</div>
+                </div>
+            `;
+
+            // Paths progress
+            const pathsProgress = document.getElementById('pathsProgress');
+            pathsProgress.innerHTML = Object.values(PATHS).map(path => {
+                const prog = Storage.getPathProgress(path.id, path.steps.length);
+                return `
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 48px; height: 48px; background: ${path.color}20; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: ${path.color};">
+                                    ${path.icon}
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 1.15rem; font-weight: 800;">${path.title}</h3>
+                                    <span style="font-size: 0.85rem; color: var(--text-muted);">${path.steps.length} خطوة</span>
+                                </div>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 1.5rem; font-weight: 900; color: ${path.color};">${prog.percent}%</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">${prog.completed}/${prog.total}</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: ${prog.percent}%; background: linear-gradient(90deg, ${path.color}, ${path.color}aa);"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Achievements
+            const achievementsGrid = document.getElementById('achievementsGrid');
+            const unlocked = Storage.getAchievements();
+            achievementsGrid.innerHTML = ACHIEVEMENTS.map(a => {
+                const isUnlocked = unlocked.includes(a.id);
+                return `
+                    <div class="achievement ${isUnlocked ? 'unlocked' : 'locked'}">
+                        <div class="achievement-icon">${isUnlocked ? a.icon : '🔒'}</div>
+                        <div class="achievement-title">${a.title}</div>
+                        <div class="achievement-desc">${a.desc}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function resetProgress() {
+            if (confirm('متأكد تبي تمسح كل تقدّمك؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                Storage.resetAll();
+                Toast.info('تم المسح', 'تقدّمك انمسح. يلا نبدأ من جديد!');
+                renderProgress();
+            }
+        }
+
+        renderProgress();
+    </script>
+</body>
+</html>
